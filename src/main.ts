@@ -6,7 +6,11 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+
 Vue.config.productionTip = false
+
+// TODO:開発用設定
+Vue.config.devtools = true
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
