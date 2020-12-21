@@ -17,7 +17,6 @@
       <b-button type="submit" variant="primary" v-if="editable">登録</b-button>
       <b-button type="button" variant="warning" @click="changeEditable" v-if="!editable">編集</b-button>
     </b-form>
-    {{form}}
   </div>
 </template>
 
@@ -42,15 +41,6 @@ export default class Detail extends Vue {
     } else {
       this.memo = this.memos.getNewMemo()
       this.editable = true;
-    }
-  }
-
-  data() {
-    return {
-      form: {
-        title: '',
-        body: ''
-      },
     }
   }
 
