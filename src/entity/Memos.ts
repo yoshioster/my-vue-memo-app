@@ -14,7 +14,8 @@ export default class Memos {
       list = JSON.parse(localStorage.getItem(LOCALSTRAGE_KEY) as string)
       const memoList: Memo[] = []
       list.forEach((memo: Memo) => {
-        this.nextId = (this.nextId < memo.id) ? memo.id : this.nextId
+        this.nextId = (this.nextId > memo.id) ? this.nextId : memo.id + 1
+        console.log(this.nextId + ' ' + memo.id)
         memoList.push(new Memo(memo.id, memo.title, memo.body))
       })
       this.list = memoList
@@ -33,12 +34,11 @@ export default class Memos {
   }
 
   public getNewMemo() {
-    return new Memo(this.nextId, '', '')
+    return new Memo(this.nextId++, '', '')
   }
 
   public addMemo(memo: Memo) {
     this.list.push(memo)
-    this.nextId++
     localStorage.setItem(LOCALSTRAGE_KEY, JSON.stringify(this.list))
   }
 }
