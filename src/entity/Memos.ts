@@ -15,7 +15,6 @@ export default class Memos {
       const memoList: Memo[] = []
       list.forEach((memo: Memo) => {
         this.nextId = (this.nextId > memo.id) ? this.nextId : memo.id + 1
-        console.log(this.nextId + ' ' + memo.id)
         memoList.push(new Memo(memo.id, memo.title, memo.body))
       })
       this.list = memoList
