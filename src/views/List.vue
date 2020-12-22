@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="memo-list">
-      <b-table :items="items">
+      <b-table :items="items" :fields="fields">
 
       </b-table>
     </div>
@@ -18,6 +18,7 @@ export default class List extends Vue {
 
   private memos: Memos
   private items: Memo[]
+  private fields = ['title', 'body']
 
   constructor() {
     super()
