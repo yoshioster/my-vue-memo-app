@@ -37,7 +37,9 @@ export default class Memos {
   }
 
   public addMemo(memo: Memo) {
-    this.list.push(memo)
+    if (this.list.findIndex(e => e.id === memo.id) === -1) {
+      this.list.push(memo)
+    }
     localStorage.setItem(LOCALSTRAGE_KEY, JSON.stringify(this.list))
   }
 }
