@@ -4,7 +4,12 @@ export default class Tags {
   private tags: string[]
 
   constructor() {
-    this.tags = JSON.parse(localStorage.getItem(LOCALSTRAGE_TAGS_KEY) as string)
+    if (LOCALSTRAGE_TAGS_KEY in localStorage) {
+      this.tags = JSON.parse(localStorage.getItem(LOCALSTRAGE_TAGS_KEY) as string)
+    } else {
+      this.tags = []
+      localStorage.setItem(LOCALSTRAGE_TAGS_KEY, JSON.stringify(this.tags))
+    }
   }
 
   getTags(): string[] {
