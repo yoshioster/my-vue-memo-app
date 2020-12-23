@@ -15,7 +15,7 @@ export default class Memos {
       const memoList: Memo[] = []
       list.forEach((memo: Memo) => {
         this.nextId = (this.nextId > memo.id) ? this.nextId : memo.id + 1
-        memoList.push(new Memo(memo.id, memo.title, memo.body))
+        memoList.push(new Memo(memo.id, memo.title, memo.body, memo.tags))
       })
       this.list = memoList
     } else {
@@ -33,7 +33,7 @@ export default class Memos {
   }
 
   public getNewMemo() {
-    return new Memo(this.nextId++, '', '')
+    return new Memo(this.nextId++, '', '', [])
   }
 
   public addMemo(memo: Memo) {
