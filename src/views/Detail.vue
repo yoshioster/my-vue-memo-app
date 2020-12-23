@@ -35,9 +35,10 @@
                     type="search"
                     size="sm"
                     autocomplete="off"
+                    class="form-control"
                   ></b-form-input>
                   <b-input-group-append>
-                   <b-button @click="addToTags(addTag)" variant="primary">add to list</b-button>
+                   <b-button @click="addToTags(addTag)" variant="primary" size="sm">add to list</b-button>
                   </b-input-group-append>
                  </b-input-group>
               </b-form-group>
