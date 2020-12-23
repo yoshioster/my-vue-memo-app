@@ -1,9 +1,10 @@
 <template>
   <div>
     <div class="memo-list">
-      <b-table :items="items" :fields="fields">
-
-      </b-table>
+      <b-table
+        :items="items"
+        :fields="fields"
+        @row-clicked="onRowClicked"></b-table>
     </div>
   </div>
 </template>
@@ -34,8 +35,8 @@ export default class List extends Vue {
     this.items = this.memos.getList()
   }
 
-  data() {
-    return {msg: 'this is list'}
+  onRowClicked(memo: Memo) {
+    this.$router.push(`/detail/${memo.id}`)
   }
 }
 </script>
