@@ -8,6 +8,12 @@
   </div>
 </template>
 
+<style lang="scss">
+table {
+  text-align: left;
+}
+</style>
+
 <script lang="ts">
 import Memo from "@/entity/Memo";
 import Memos from "@/entity/Memos";
@@ -18,7 +24,9 @@ export default class List extends Vue {
 
   private memos: Memos
   private items: Memo[]
-  private fields = ['title', 'body']
+  private fields = [
+    {key : 'title', thStyle : { width : '10rem' }, sortable: true},
+    {key : 'body'}]
 
   constructor() {
     super()
