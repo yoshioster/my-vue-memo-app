@@ -2,6 +2,7 @@
   <div>
     <b-form @submit="onSubmit">
       <b-form-group>
+        <b-form-select v-model="memo.category" :options="categoryList" :disabled="!editable" @change="onChange"></b-form-select>
         <b-form-tags id="tags" v-model="memo.tags" no-outer-focus class="mb-2" :disabled="!editable">
           <template v-slot="{ tags, disabled, addTag, removeTag }">
             <ul v-if="tags.length > 0" class="list-inline d-inline-block mb-2">
@@ -57,17 +58,9 @@
           </b-dropdown>
           </template>
         </b-form-tags>
-        <b-form-input
-          id="title"
-          v-model="memo.title"
-          placeholder="title"
-          :disabled="!editable"
-          required></b-form-input>
-        <b-form-textarea
-          id="body"
-          v-model="memo.body"
-          :disabled="!editable"
-          placeholder="body"></b-form-textarea>
+        <div v-for="(schema, index) in cs.schema" :key="index">
+          <general-input :type="schema.type" v-model="memo.properties[schema.property]" :disabled="!editable"></general-input>
+        </div>
       </b-form-group>
       <b-button type="submit" variant="primary" v-if="editable">登録</b-button>
       <b-button type="button" variant="warning" @click="changeEditable" v-if="!editable">編集</b-button>
@@ -80,14 +73,22 @@ import { Component, Vue } from "vue-property-decorator"
 import Memo from '../entity/Memo'
 import Memos from '../entity/Memos'
 import Tags from '../entity/Tags'
+import { CategorySchema, categoryList, categorySchema} from '@/data/Category'
+import GeneralInput from '@/components/GeneralInput.vue'
 
-@Component({})
+@Component({
+    components: {
+    GeneralInput,
+  }
+})
 export default class Detail extends Vue {
 
   private memo: Memo
   private memos: Memos
+  private categoryList: string[]
   private tags: Tags
   private editable = false
+  private cs: CategorySchema
 
   private search = ''
   private tagOptions: string[] = []
@@ -95,6 +96,7 @@ export default class Detail extends Vue {
   constructor() {
     super()
     this.memos = new Memos()
+    this.categoryList = categoryList
     this.tags = new Tags()
     this.tagOptions = this.tags.getTags()
     if (this.$route.params.id && !Number.isNaN(this.$route.params.id)) {
@@ -104,6 +106,13 @@ export default class Detail extends Vue {
       this.memo = this.memos.getNewMemo()
       this.editable = true;
     }
+    const cs =  categorySchema.find(schema => schema.name === this.memo.category)
+    this.cs = cs? cs:categorySchema[0]
+    this.cs?.schema.forEach(s => {
+      if (!this.memo.properties[s.property]) {
+        this.memo.properties[s.property] = ''
+      }
+    })
   }
 
   onSubmit(): void {
@@ -125,7 +134,7 @@ export default class Detail extends Vue {
     // Compute the search criteria
     return this.search.trim().toLowerCase()
   }
-  
+
   get availableOptions(): string[] {
     const criteria = this.criteria
     // Filter out already selected options
@@ -148,6 +157,20 @@ export default class Detail extends Vue {
   onOptionClick({ option, addTag }: any) {
     addTag(option)
     this.search = ''
+  }
+
+  onChange() {
+    const category = this.memo.category
+    const cs = categorySchema.find(schema => {
+      const ret = schema.name == category
+      return ret
+    })
+    this.cs = cs? cs:categorySchema[1]
+    this.cs?.schema.forEach(s => {
+      if (!this.memo.properties[s.property]) {
+        this.memo.properties[s.property] = ''
+      }
+    })
   }
 
   addToTags(addTag: Function) {

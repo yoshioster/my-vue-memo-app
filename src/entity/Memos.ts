@@ -15,7 +15,9 @@ export default class Memos {
       const memoList: Memo[] = []
       list.forEach((memo: Memo) => {
         this.nextId = (this.nextId > memo.id) ? this.nextId : memo.id + 1
-        memoList.push(new Memo(memo.id, memo.title, memo.body, memo.tags))
+        const m = new Memo(memo.id, memo.category, memo.title, memo.body, memo.tags)
+        m.properties = memo.properties
+        memoList.push(m)
       })
       this.list = memoList
     } else {
@@ -23,8 +25,8 @@ export default class Memos {
     }
   }
 
-  public getList() {
-    return this.list
+  public getList(category: string) {
+    return this.list.filter(memo => memo.category === category)
   }
 
   public getMemo(id: number) {
@@ -33,7 +35,7 @@ export default class Memos {
   }
 
   public getNewMemo() {
-    return new Memo(this.nextId++, '', '', [])
+    return new Memo(this.nextId++, '', '', '', [])
   }
 
   public addMemo(memo: Memo) {
